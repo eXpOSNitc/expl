@@ -776,12 +776,22 @@ int main(int argc,char* argv[])
     TInstall("void",0,NULL);
     TInstall("dummy",0,NULL); // This is for creating the fieldlist in case of udt 
     
-    if(argc > 1)
+    if (argc<2)
+    {
+        printf("Please provide an input filename\n");
+        exit(1);
+    }
+    else
     {
         fp = fopen(argv[1],"r");
-        if(fp)
+        if(!fp)
+        {
+            printf("Invalid input file specified\n");
+            exit(1);
+        }
+        else
             yyin = fp;
     }    
     yyparse(); 
-    return 1; 
+    return 0; 
 }

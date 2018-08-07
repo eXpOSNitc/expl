@@ -95,11 +95,11 @@
 %%
 program : TypeDefBlock gdeclaration fdeflist mainblock {
 			                                            fclose(intermediate);
-			                                            exit(1);
+			                                            //exit(0);
                         								}
         | TypeDefBlock gdeclaration mainblock    {
 		                                            fclose(intermediate);
-		                                            exit(1);
+		                                            //exit(1);
                                     			 }
         ;
 

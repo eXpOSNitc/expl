@@ -1,3 +1,0 @@
-lex ltranslate.l
-gcc lex.yy.c
-./a.out

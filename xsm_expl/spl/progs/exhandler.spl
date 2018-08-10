@@ -1,4 +1,0 @@
-print("Exception");
-print("Found");
-print("Program");
-print("Terminated");

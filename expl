@@ -9,3 +9,5 @@ fi
 
 #Label Translation
 ./ltranslate
+
+cp "assemblycode.xsm" "${1%.*}.xsm"

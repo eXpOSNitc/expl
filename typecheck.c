@@ -13,7 +13,7 @@ int verify(struct ASTNode *node,int g,int l,int a,struct Typetable * t)
 		Ltemp = LLookup(node -> name);
         if(Ltemp != NULL)
         {
-            printf("Re initialization of variable\n");
+            yyerror("Re initialization of variable\n");
             exit(1);
         }
 	}
@@ -23,7 +23,7 @@ int verify(struct ASTNode *node,int g,int l,int a,struct Typetable * t)
 		Argtemp = PLookup(node -> name);
 	    if(Argtemp != NULL)
 	    {
-	        printf("Re initialization of variable in paramlist\n");
+	        yyerror("Re initialization of variable in paramlist\n");
 	        exit(1);
 	    }
 	}
@@ -33,7 +33,7 @@ int verify(struct ASTNode *node,int g,int l,int a,struct Typetable * t)
 		Gtemp = GLookup(node -> name);
 	    if(Gtemp != NULL)
 	    {
-	        printf("Re initialization of identifier\n");
+	        yyerror("Re initialization of identifier\n");
 	        exit(1);
 	    }
 	}

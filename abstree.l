@@ -7,7 +7,7 @@
 	union Constant number;
 	char *variable,*p,var[10];
 	struct Typetable* temp;
-	int i;
+	int i, lineno=1;
 %}
 
 %%
@@ -85,6 +85,8 @@
 						yylval.nptr = TreeCreate(temp,NODE_STRVAL,var,&p,NULL,NULL,NULL,NULL);
 						return STRVAL;
 					}
+"//"(.)*	{}
+"/*"([^*]|\*+[^*/])*\*+"/"	{}
 [{}"]	{return *yytext;}
 "<="	{return LE;}
 ">="	{return GE;}
@@ -104,7 +106,7 @@
 "]"		{return *yytext;}
 [()] 	{return *yytext;}
 [,;]	{return *yytext;}
-[\n] 	{}
+[\n] 	{lineno++;}
 . 		{yyerror("unknown character\n");exit(1);}
 
 %%

@@ -586,7 +586,6 @@ int codegen(struct ASTNode* root)
 									if(temp -> ptr2 -> nodetype == NODE_FIELD)
 									{
 										fld = 1;
-										r2 = codegen(temp -> ptr2);
 
 										for(i = 0; i <= counter; i++)
 		 									fprintf(intermediate, "PUSH R%d\n",i);
@@ -596,6 +595,8 @@ int codegen(struct ASTNode* root)
 
 			 							fprintf(intermediate, "MOV R0,-1\n");
 			 							fprintf(intermediate, "PUSH R0\n"); //Argument 1
+
+			 							r2 = codegen(temp -> ptr2);
 			 							fprintf(intermediate, "PUSH R%d\n",r2); //Argument 2
 										freereg();
 										temporary++;

@@ -484,15 +484,8 @@ int codegen(struct ASTNode* root)
 			case NODE_DIV :
  									r1 = codegen(temp -> ptr1);
 									r2 = codegen(temp -> ptr2);
-									l1 = getlabel();
-									fprintf(intermediate, "JZ R%d,L%d\n",r2,l1);
 									fprintf(intermediate, "DIV R%d,R%d\n",r1,r2);
 									freereg();
-									fprintf(intermediate, "JMP L%d\n",l2);
-									fprintf(intermediate, "L%d:\n",l1);
-									fprintf(intermediate, "INT 10\n");
-									fprintf(intermediate, "L%d:\n",l2);
-
 									return r1;
 									break;
 			case NODE_MOD :

@@ -832,9 +832,10 @@ int codegen(struct ASTNode* root)
 		 							fprintf(intermediate, "PUSH R0\n"); //space for return value
 		 							Gtemp = GLookup(temp -> name);
 		 							fprintf(intermediate, "CALL F%d\n",Gtemp -> binding);
-		 							r1 = getreg();
+		 							r1 = status + 1;
                                     fprintf(intermediate, "POP R%d\n",r1);	// for return value
-                                    freereg();
+																		if(status == -1)
+																			r2 = getreg();
                                     r2 = getreg();
                                     Argtemp = Gtemp -> paramlist;
                                     temporary = 0;
@@ -845,6 +846,8 @@ int codegen(struct ASTNode* root)
 		 								Argtemp = Argtemp -> next;
                                     }
 
+																		if(status == -1)
+																			freereg();
                                     freereg();
 
                                     for(i = status; i >= 0; i--)
@@ -853,13 +856,14 @@ int codegen(struct ASTNode* root)
 		 								fprintf(intermediate, "POP R%d\n",i);
                                     }
 		 							counter = status;
-		 							r1 = getreg();
-		 							r2 = getreg();
-		 							fprintf(intermediate, "MOV R%d,%d\n",r1,(temporary+1));
-		 							fprintf(intermediate, "MOV R%d,SP\n",r2);
-		 							fprintf(intermediate, "ADD R%d,R%d\n",r2,r1);
-		 							fprintf(intermediate, "MOV R%d,[R%d]\n",r1,r2);
-		 							freereg();
+									r1 = getreg();
+		 							//r1 = getreg();
+		 							//r2 = getreg();
+		 							//fprintf(intermediate, "MOV R%d,%d\n",r1,(temporary+1));
+		 							//fprintf(intermediate, "MOV R%d,SP\n",r2);
+		 							//fprintf(intermediate, "ADD R%d,R%d\n",r2,r1);
+		 							//fprintf(intermediate, "MOV R%d,[R%d]\n",r1,r2);
+		 							//freereg();
 		 							return r1;
 		 							break;
 		 	case NODE_RET :

@@ -999,7 +999,7 @@ int codegen(struct ASTNode* root)
 		 							if(strcmp(temp1 -> name, "Read") == 0)
 		 								we2 = 1;
 
-                                                                        if(temp1->nodetype==NODE_STRVAL){
+                  if(temp1->nodetype==NODE_STRVAL){
 		 							        fprintf(intermediate, "MOV R0,\"%s\"\n",temp1 -> name);
 		 							        fprintf(intermediate, "PUSH R0\n"); //function code
 		 							}
@@ -1071,10 +1071,10 @@ int codegen(struct ASTNode* root)
 
 									temporary = 0;
 									for(i = status; i >= 0; i--)
-                                    {
-                                    	temporary = temporary + 1;
+                  {
+                  	temporary = temporary + 1;
 		 								fprintf(intermediate, "POP R%d\n",i);
-                                    }
+                  }
 		 							counter = status;
 		 							r1 = getreg();
 		 							r2 = getreg();

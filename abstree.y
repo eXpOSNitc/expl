@@ -1,4 +1,4 @@
-%{ 
+%{
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -34,13 +34,13 @@
     struct ASTNode *nptr;
 };
 
-%token NUM ID PLUS MUL DIV MOD ASGN READ WRITE MINUS NEWLINE LT GT DEQ NEQ ELSE IF THEN ENDIF ENDWHILE WHILE DO 
+%token NUM ID PLUS MUL DIV MOD ASGN READ WRITE MINUS NEWLINE LT GT DEQ NEQ ELSE IF THEN ENDIF ENDWHILE WHILE DO
 %token START END DECL ENDDECL INT STR LE GE NOT AND OR MAIN RETURN ALLOC FREE INIT BRK CONTINUE BRKP TYPE ENDTYPE
 %token NILL DEQNILL NEQNILL STRVAL EXPOSCALL
 
-%left PLUS MINUS AND OR 
-%left MUL DIV MOD 
-%right ASGN 
+%left PLUS MINUS AND OR
+%left MUL DIV MOD
+%right ASGN
 %nonassoc LT  GT LE GE NOT
 %right DEQ
 %right NEQ
@@ -107,16 +107,16 @@ TypeDefBlock  : TYPE TypeDefList ENDTYPE    {
 
                                             }
               |                             {
-                                            
-                                            }                  
+
+                                            }
               ;
 
 TypeDefList   : TypeDefList TypeDef
-              | TypeDef 
+              | TypeDef
               ;
 
-TypeDef :    ID '{' FieldDeclList '}'{ 
-	                                    TInstall($1 -> name,0,Fhead); //size is initialized to 0. actual size is calculated in TInstall 
+TypeDef :    ID '{' FieldDeclList '}'{
+	                                    TInstall($1 -> name,0,Fhead); //size is initialized to 0. actual size is calculated in TInstall
                                		}
               ;
 
@@ -138,7 +138,7 @@ gdeclaration : DECL GDeclList ENDDECL   {
                                         }
                 |                       {
                                             start();
-                                        }        
+                                        }
             ;
 
 GDeclList : GDecl             {}
@@ -146,15 +146,15 @@ GDeclList : GDecl             {}
         ;
 
 GDecl : TypeName Gidlist ';'    {
-                                   
+
                                 }
      ;
 
 Gidlist : ID            {
-                            
+
                             verify($1,1,0,0,NULL);
-                            GInstall($1 -> name,declarationType,1,NULL);                                
-                            
+                            GInstall($1 -> name,declarationType,1,NULL);
+
                         }
         |ID '['NUM']'  {
                          verify($1,1,0,0,NULL);
@@ -203,7 +203,7 @@ TypeName :     INT  {declarationType = TLookup("integer");}
                         {
                             yyerror("Unknown user-defined type\n");
                             exit(1);
-                        
+
                         }
                     }
         ;
@@ -212,7 +212,7 @@ FType :     INT  {FdeclarationType = TLookup("integer");}
         |   STR {FdeclarationType = TLookup("string");}
         |   ID {
                    FdeclarationType = TLookup($1 -> name);
-                        
+
                     if(FdeclarationType == NULL)
                     {
                         yyerror("Unknown user-defined type\n");
@@ -226,12 +226,12 @@ ParamList :   Param               {}
         |
         ;
 
-Param     :   FType fvlist         {} 
+Param     :   FType fvlist         {}
         ;
-        
+
 fvlist  :   ID                     {
                                         verify($1,0,0,1,NULL);
-                                        PInstall($1 -> name,FdeclarationType); 
+                                        PInstall($1 -> name,FdeclarationType);
                                     }
         ;
 
@@ -239,7 +239,7 @@ fdeflist : fdef                 {}
             | fdeflist fdef     {}
             ;
 
-fdef : TypeName ID '(' ParamList ')' '{' LdeclBlock Body '}'    {  
+fdef : TypeName ID '(' ParamList ')' '{' LdeclBlock Body '}'    {
                                                                 defcount++; //  to keep track of number of functions defined
 
                                                                 Gtemp = GLookup($2 -> name);
@@ -290,10 +290,10 @@ fdef : TypeName ID '(' ParamList ')' '{' LdeclBlock Body '}'    {
                                                                 Ltemp = Lhead;
 
                                                                 while(Ltemp != NULL)
-                                                                {                                                               
+                                                                {
                                                                     fprintf(intermediate, "PUSH R0\n");
                                                                     Ltemp = Ltemp -> next;
-                                                                }                                                               
+                                                                }
 
                                                                 codegen($8);
 
@@ -323,9 +323,9 @@ lvlist : ID              {
                             verify($3,0,1,0,NULL);
                             LInstall($3 -> name,FdeclarationType);
                         }
-        ;   
+        ;
 
-mainblock : TypeName MAIN '(' ')' '{' LdeclBlock Body '}'  
+mainblock : TypeName MAIN '(' ')' '{' LdeclBlock Body '}'
                             {
                                 if(declcount != defcount)
                                 {
@@ -345,7 +345,7 @@ mainblock : TypeName MAIN '(' ')' '{' LdeclBlock Body '}'
                                 Ltemp = Lhead;
 
                                 while(Ltemp != NULL)
-                                {                                                                
+                                {
                                     fprintf(intermediate, "PUSH R0\n");
                                     Ltemp = Ltemp -> next;
                                 }
@@ -365,8 +365,8 @@ Body : START Slist Retstmt END  {
                                 }
     ;
 
-Retstmt : RETURN Expr ';'   {   
-                                if(declarationType == $2 -> type) 
+Retstmt : RETURN Expr ';'   {
+                                if(declarationType == $2 -> type)
                                     $$ = TreeCreate($2->type, NODE_RET,NULL,NULL,NULL,NULL,$2,NULL);
                                 else
                                 {
@@ -382,7 +382,7 @@ Slist : Slist Stmt   	{
                             head -> ptr1 = $1;
                             head -> ptr2 = $2;
                             $$ = head;
-                        }   
+                        }
         | Stmt          {
                             $$ = $1;
                         }
@@ -400,20 +400,20 @@ Stmt :  ID ASGN Expr ';'         {
                                     {
                                     	type_comp($1 -> type, $3 -> type , 'a');
                                     }
-                                    $$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,$3,NULL);  
+                                    $$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,$3,NULL);
                                 }
         | ID '[' Expr ']' ASGN Expr ';'   {
                                             type_assign_arr($1,$3,0);
-                                            type_comp($1-> type,$6 -> type,'a'); 
-                                            $$ = TreeCreate(TLookup("void"), NODE_ARRAY_ASGN,NULL,NULL,NULL,$1,$3,$6); 
+                                            type_comp($1-> type,$6 -> type,'a');
+                                            $$ = TreeCreate(TLookup("void"), NODE_ARRAY_ASGN,NULL,NULL,NULL,$1,$3,$6);
                                           }
         | READ '(' ID ')' ';'   {
                                  type_assign($3,NULL,0,0,0,0,1);
-                                 $$ = TreeCreate(TLookup("void"), NODE_READ,NULL,NULL,NULL,NULL,$3,NULL); 
-                                } 
+                                 $$ = TreeCreate(TLookup("void"), NODE_READ,NULL,NULL,NULL,NULL,$3,NULL);
+                                }
         | READ '(' ID '[' Expr ']' ')' ';'   {
                                                 type_assign_arr($3,$5,0);
-                                                $$ = TreeCreate(TLookup("void"), NODE_ARRAY_READ,NULL,NULL,NULL,NULL,$3,$5); 
+                                                $$ = TreeCreate(TLookup("void"), NODE_ARRAY_READ,NULL,NULL,NULL,NULL,$3,$5);
                                             }
         | WRITE '(' Expr ')' ';'  {
                                     if($3 -> type == TLookup("integer") || $3 -> type == TLookup("string"))
@@ -433,28 +433,28 @@ Stmt :  ID ASGN Expr ';'         {
                                             exit(1);
                                         }
                                     }
-                                    
+
                                 }
-        |IF '(' Expr ')' THEN Slist ENDIF ';' 
-                               { 
+        |IF '(' Expr ')' THEN Slist ENDIF ';'
+                               {
                                		type_comp($3 -> type, TLookup("boolean"),'i');
-                                    $$ = TreeCreate(TLookup("void"), NODE_IF,NULL,NULL,NULL,$3,$6,NULL); 
+                                    $$ = TreeCreate(TLookup("void"), NODE_IF,NULL,NULL,NULL,$3,$6,NULL);
                                }
-        |IF '(' Expr ')' THEN Slist ELSE Slist ENDIF ';' 
-                                { 
+        |IF '(' Expr ')' THEN Slist ELSE Slist ENDIF ';'
+                                {
                                		type_comp($3 -> type, TLookup("boolean"),'e');
-                                    $$ = TreeCreate(TLookup("void"), NODE_IF_ELSE,NULL,NULL,NULL,$3,$6,$8); 
+                                    $$ = TreeCreate(TLookup("void"), NODE_IF_ELSE,NULL,NULL,NULL,$3,$6,$8);
                                 }
         |WHILE '(' Expr ')' DO Slist ENDWHILE ';'
-                                { 
+                                {
                                		type_comp($3 -> type, TLookup("boolean"),'w');
-                                    $$ = TreeCreate(TLookup("void"), NODE_WHILE,NULL,NULL,NULL,$3,$6,NULL); 
+                                    $$ = TreeCreate(TLookup("void"), NODE_WHILE,NULL,NULL,NULL,$3,$6,NULL);
                                 }
         | ID ASGN ALLOC'(' ')' ';'  {
         								type_assign($1,NULL,1,0,1,0,0);
                                         head = TreeCreate(TLookup("integer"),NODE_ALLOC,NULL,NULL,NULL,NULL,NULL,NULL);
                                         $$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,head,NULL);
-                                    }    
+                                    }
         | FIELD ASGN ALLOC'(' ')' ';'  {
                                             head = get_last($1);
                                             if(head -> type == TLookup("integer") || head -> type == TLookup("string") )
@@ -465,14 +465,14 @@ Stmt :  ID ASGN Expr ';'         {
                                             else
                                             {
                                                 head = TreeCreate(TLookup("integer"),NODE_ALLOC,NULL,NULL,NULL,NULL,NULL,NULL);
-                                                $$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,head,NULL);        
+                                                $$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,head,NULL);
                                             }
                                         }
         | FIELD ASGN FIELD ';'           {
                                             head = get_last($1);
                                             head1 = get_last($3);
                                             if(head1 -> type == head -> type)
-                                                $$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,$3,NULL);        
+                                                $$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,$3,NULL);
                                             else
                                             {
                                                 yyerror("conflicting assignment types in field1\n");
@@ -482,16 +482,16 @@ Stmt :  ID ASGN Expr ';'         {
 		| FIELD ASGN Expr ';'			{
                                             head = get_last($1);
                                             if($3 -> type == head -> type)
-                                                $$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,$3,NULL);        
+                                                $$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,$3,NULL);
                                             else
                                             {
                                                 yyerror("conflicting assignment types in field2\n");
                                                 exit(1);
                                             }
-                                        }		
+                                        }
         | FREE '(' ID ')' ';'          {
                                             type_assign($3,NULL,1,1,0,0,0);
-                                            $$ = TreeCreate(TLookup("void"),NODE_FREE,NULL,NULL,NULL,NULL,$3,NULL); 
+                                            $$ = TreeCreate(TLookup("void"),NODE_FREE,NULL,NULL,NULL,NULL,$3,NULL);
                                         }
 	    | FREE '(' FIELD ')' ';'        {
                                             head = get_last($3);
@@ -500,17 +500,17 @@ Stmt :  ID ASGN Expr ';'         {
                                                 yyerror("cannot FREE non-udt\n");
                                                 exit(1);
                                             }
-                                            $$ = TreeCreate(TLookup("void"),NODE_FREE,NULL,NULL,NULL,NULL,$3,NULL); 
+                                            $$ = TreeCreate(TLookup("void"),NODE_FREE,NULL,NULL,NULL,NULL,$3,NULL);
 	                                    }
         | READ '(' FIELD ')' ';'    	{
                                             head = get_last($3);
-                                            
+
                                             if(head -> type != TLookup("integer") && head -> type != TLookup("string") )
                                             {
                                                 yyerror("cannot READ a udt type\n");
                                                 exit(1);
                                             }
-                                            $$ = TreeCreate(TLookup("void"),NODE_READ,NULL,NULL,NULL,NULL,$3,NULL); 
+                                            $$ = TreeCreate(TLookup("void"),NODE_READ,NULL,NULL,NULL,NULL,$3,NULL);
 	                                    }
 		| ID ASGN NILL ';' 				{
 			                                type_assign($1,NULL,1,0,0,0,0);
@@ -518,14 +518,14 @@ Stmt :  ID ASGN Expr ';'         {
 			        					}
       	| FIELD ASGN NILL ';'{
                                 head = get_last($1);
-                                
+
                                 if(head -> type == TLookup("integer") || head -> type == TLookup("string")
                                     || head -> type == TLookup("array_integer") || head -> type == TLookup("array_string"))
                                 {
                                     yyerror("cannot assign null to a non-udt\n");
                                     exit(1);
                                 }
-								$$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,$3,NULL); 
+								$$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,$3,NULL);
 						    }
 
 		| ID ASGN EXPOSCALL '(' exprlist_exposcall ')' ';'	{
@@ -546,7 +546,7 @@ Stmt :  ID ASGN Expr ';'         {
 													}
 		| ID ASGN INIT '(' ')' ';'	{
                                         head = TreeCreate(TLookup("void"), NODE_INIT,NULL,NULL,NULL,NULL,NULL,NULL);
-        								$$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,head,NULL); 
+        								$$ = TreeCreate(TLookup("void"), NODE_ASGN,NULL,NULL,NULL,$1,head,NULL);
 							         }
 
         | BRK ';'       {
@@ -568,7 +568,7 @@ FIELD     : ID '.' ID   {
                         }
           | FIELD '.' ID {
                             head1 = head = get_last($1);
-                            
+
                             temp1 = head -> type;
                             if(temp1 != TLookup("string") && temp1 != TLookup("integer")
                                 && temp1 != TLookup("array_integer") && temp1 != TLookup("array_string"))
@@ -591,7 +591,7 @@ FIELD     : ID '.' ID   {
                                 yyerror("Illegal access of identifier\n");
                                 exit(1);
                             }
-                        } 
+                        }
           ;
 
 exprlist : Expr                 {
@@ -614,7 +614,6 @@ exprlist_exposcall : Expr {
                                 $$ = $1;
                             }
                     | exprlist_exposcall ',' Expr {
-                                                    indicator = 1;
                                                     exprcount++;
                                                     head = $1;
 
@@ -632,15 +631,15 @@ Expr : Expr PLUS Expr       {
                             }
         |Expr MINUS Expr    {
                                 type_comp($1->type,$3->type,'-');
-                                $$ = TreeCreate(TLookup("integer"), NODE_MINUS , NULL,NULL , NULL, $1, $3, NULL);                                
+                                $$ = TreeCreate(TLookup("integer"), NODE_MINUS , NULL,NULL , NULL, $1, $3, NULL);
                             }
         |Expr MUL Expr      {
                                 type_comp($1->type,$3->type,'*');
-                                $$ = TreeCreate(TLookup("integer"), NODE_MUL , NULL,NULL , NULL, $1, $3, NULL);                                
+                                $$ = TreeCreate(TLookup("integer"), NODE_MUL , NULL,NULL , NULL, $1, $3, NULL);
                             }
         |Expr DIV Expr      {
                                 type_comp($1->type,$3->type,'/');
-                                $$ = TreeCreate(TLookup("integer"), NODE_DIV , NULL,NULL , NULL, $1, $3, NULL);                                
+                                $$ = TreeCreate(TLookup("integer"), NODE_DIV , NULL,NULL , NULL, $1, $3, NULL);
                             }
         |Expr MOD Expr      {
                                 type_comp($1->type,$3->type,'%');
@@ -661,7 +660,7 @@ Expr : Expr PLUS Expr       {
         |Expr GE Expr       {
                                 type_comp($1->type,$3->type,'$');
                                 $$ = TreeCreate(TLookup("boolean"), NODE_GE , NULL, NULL, NULL, $1, $3, NULL);
-                            }        
+                            }
         |Expr DEQ Expr      {
                                 type_comp($1->type,$3->type,'d');
                                 $$ = TreeCreate(TLookup("boolean"), NODE_DEQ, NULL, NULL, NULL, $1, $3, NULL);
@@ -698,7 +697,7 @@ Expr : Expr PLUS Expr       {
 				$$->type = TLookup("integer");
                             }
         | STRVAL			{
-                                
+
         						$$ = $1;
 							$$->type = TLookup("string");
         					}
@@ -725,6 +724,7 @@ Expr : Expr PLUS Expr       {
                                     yyerror("Unequal number of arguments\n");
                                     exit(1);
                                 }
+                                
                                 //differentiating b/w one and more than one arguments
                                 if(indicator == 1)
                                 {
@@ -760,22 +760,22 @@ Expr : Expr PLUS Expr       {
 
 %%
 
-void yyerror(char const *s) 
-{ 
-    printf("%d: %s\n",lineno,s); 
+void yyerror(char const *s)
+{
+    printf("%d: %s\n",lineno,s);
     return ;
-} 
+}
 
-int main(int argc,char* argv[]) 
-{ 
+int main(int argc,char* argv[])
+{
     TInstall("integer",1,NULL);
     TInstall("string",1,NULL);
     TInstall("boolean",1,NULL);
     TInstall("array_integer",1,NULL);
     TInstall("array_string",1,NULL);
     TInstall("void",0,NULL);
-    TInstall("dummy",0,NULL); // This is for creating the fieldlist in case of udt 
-    
+    TInstall("dummy",0,NULL); // This is for creating the fieldlist in case of udt
+
     if (argc<2)
     {
         printf("Please provide an input filename\n");
@@ -791,7 +791,7 @@ int main(int argc,char* argv[])
         }
         else
             yyin = fp;
-    }    
-    yyparse(); 
-    return 0; 
+    }
+    yyparse();
+    return 0;
 }

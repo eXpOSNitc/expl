@@ -1,27 +1,30 @@
 #define BUFF 80
 #define TABSIZE 128
-#define MEMSIZE 1024*1024
+#define MEMSIZE 1024 * 1024
 #define NUMREGS 1024
 #define STKSIZE 64
 
-struct {
+struct
+{
 	char data[BUFF];
 	int flag;
-}yylval;
+} yylval;
 
-struct entry{
+struct entry
+{
 	char label[BUFF];
 	int position;
 	int lineno;
 };
 
-struct {
+struct
+{
 	struct entry entry[TABSIZE];
 	int label_count;
-}symtab;
+} symtab;
 
-int pass,started,error,start_offset,line_count;
+int pass, started, error, start_offset, line_count;
 
-int mem[MEMSIZE],reg[NUMREGS],sp,bp,ip;
+int mem[MEMSIZE], reg[NUMREGS], sp, bp, ip;
 
-int stack[STKSIZE],top;
+int stack[STKSIZE], top;

@@ -9,3 +9,4 @@ y.tab.h
 *.temp
 *.o
 expl_progs/
+.vscode/*

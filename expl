@@ -1,4 +1,3 @@
-
 #Compiling
 ./expl-bin $1
 if [ $? -eq 1 ]

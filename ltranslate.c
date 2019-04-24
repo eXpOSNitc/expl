@@ -9,19 +9,19 @@ struct LTable *LThead, *LTtail;
 void append_table(char *label, int addr)
 {
 	struct LTable *temp;
-	temp = (struct LTable *) malloc(sizeof(struct LTable));
-	temp -> name = label;
-	temp -> addr = addr;
+	temp = (struct LTable *)malloc(sizeof(struct LTable));
+	temp->name = label;
+	temp->addr = addr;
 
-	if(LThead == NULL)
+	if (LThead == NULL)
 	{
 		LThead = temp;
 		LTtail = temp;
 	}
 	else
 	{
-		LTtail -> next = temp;
-		LTtail = LTtail -> next;
+		LTtail->next = temp;
+		LTtail = LTtail->next;
 	}
 	return;
 }
@@ -29,14 +29,14 @@ void append_table(char *label, int addr)
 int find_map(char *name)
 {
 	struct LTable *temp;
-	
-	temp = LThead;
-	while(temp != NULL)
-	{
-		if(strcmp(name,temp->name) == 0)
-			return temp -> addr;
 
-		temp = temp -> next;
+	temp = LThead;
+	while (temp != NULL)
+	{
+		if (strcmp(name, temp->name) == 0)
+			return temp->addr;
+
+		temp = temp->next;
 	}
 	return -1;
 }
@@ -46,10 +46,10 @@ void print_table()
 	struct LTable *temp;
 
 	temp = LThead;
-	while(temp != NULL)
+	while (temp != NULL)
 	{
-		printf("%s : %d\n",temp-> name, temp-> addr);
-		temp = temp -> next;
+		printf("%s : %d\n", temp->name, temp->addr);
+		temp = temp->next;
 	}
 	return;
 }

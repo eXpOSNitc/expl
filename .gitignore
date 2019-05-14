@@ -9,4 +9,5 @@ y.tab.h
 *.temp
 *.o
 expl_progs/
+.DS_Store
 .vscode/*

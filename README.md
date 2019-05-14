@@ -1,7 +1,7 @@
 ExpL Compiler
 ============
 
-**Introduction** : ExpL (Experimantal Language) Compiler is used to write programs which can be run on eXpOS (eXperimental Operating System). The compiler compiles the program written in ExpL and translates it into machine code which is simulated on the machine.
+**Introduction** : ExpL (Experimental Language) Compiler is used to write programs which can be run on eXpOS (eXperimental Operating System). The compiler compiles the program written in ExpL and translates it into machine code which is simulated on the machine.
 
 Prerequisites :
 -------------

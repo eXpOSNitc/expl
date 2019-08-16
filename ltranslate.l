@@ -11,6 +11,11 @@
 %}
 
 %%
+\"[a-zA-Z0-9]+[:]\"	{
+					/* Don't treat string inside quotes as labels. */
+						if (t)
+							fprintf(intermediate, "%s", yytext);
+					}
 [a-zA-Z0-9]+[:]	{
 					if (!t)
 					{
@@ -28,7 +33,7 @@
 "JMP "[a-zA-Z0-9]+   {
 						if (t)
 						{
-							k = find_map(yytext + 4);	
+							k = find_map(yytext + 4);
 							fprintf(intermediate, "JMP %d", k);
 						}
 					}

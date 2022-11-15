@@ -708,7 +708,7 @@ int codegen(struct ASTNode *root)
 			fprintf(intermediate, "CALL 0\n");
 			fprintf(intermediate, "SUB SP,5\n");
 
-			for (int i = temporary; i > 0; i--)
+			for (i = temporary; i > 0; i--)
 				fprintf(intermediate, "POP R0\n");
 
 			for (i = status; i >= 0; i--)

@@ -66,7 +66,7 @@
 "alloc" 	{return ALLOC;}
 "free" 		{return FREE;}
 [a-zA-Z][a-zA-Z0-9]*	{
-			variable = malloc(sizeof(yytext));
+			variable = malloc(yyleng * sizeof(char));
 			strcpy(variable, yytext);
 			temp = TLookup("integer");  // default type for any word (variable or string) is int
 			yylval.nptr = TreeCreate(temp, NODE_ID, variable, &yytext, NULL, NULL, NULL, NULL); 

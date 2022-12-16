@@ -23,7 +23,7 @@ void GInstall(char *name, struct Typetable *type, int size, struct Paramstruct *
     }
 
     temp = (struct Gsymbol *)malloc(sizeof(struct Gsymbol));
-    temp->name = (char *)malloc(sizeof(name));
+    temp->name = (char *)malloc(strlen(name) * sizeof(char));
     strcpy(temp->name, name);
     temp->type = type;
     temp->size = size;
@@ -67,7 +67,7 @@ void LInstall(char *name, struct Typetable *type)
 {
     struct Lsymbol *temp;
     temp = (struct Lsymbol *)malloc(sizeof(struct Lsymbol));
-    temp->name = (char *)malloc(sizeof(name));
+    temp->name = (char *)malloc(strlen(name) * sizeof(char));
     strcpy(temp->name, name);
     temp->type = type;
     temp->next = NULL;
@@ -100,7 +100,7 @@ void PInstall(char *name, struct Typetable *type)
 {
     struct Paramstruct *temp;
     temp = (struct Paramstruct *)malloc(sizeof(struct Paramstruct));
-    temp->name = (char *)malloc(sizeof(name));
+    temp->name = (char *)malloc(strlen(name) * sizeof(char));
     strcpy(temp->name, name);
     temp->type = type;
     temp->next = NULL;
@@ -135,7 +135,7 @@ void TInstall(char *name, int size, struct Fieldlist *fields)
     int counter = 0;
 
     temp = (struct Typetable *)malloc(sizeof(struct Typetable));
-    temp->name = (char *)malloc(sizeof(name));
+    temp->name = (char *)malloc(strlen(name) * sizeof(char));
     strcpy(temp->name, name);
     temp->next = NULL;
 
@@ -183,7 +183,7 @@ void FInstall(struct Typetable *type, char *name)
     struct Fieldlist *temp;
     struct Typetable *temp1;
     temp = (struct Fieldlist *)malloc(sizeof(struct Fieldlist));
-    temp->name = (char *)malloc(sizeof(name));
+    temp->name = (char *)malloc(strlen(name) * sizeof(char));
     strcpy(temp->name, name);
     temp->type = type;
     temp->next = NULL;

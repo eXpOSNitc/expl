@@ -1,4 +1,4 @@
-CC = gcc
+CC = gcc -std=c90
 CFLAGS = -g -fcommon
 LEX = lex
 YACC = yacc
